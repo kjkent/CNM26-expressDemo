@@ -1,6 +1,6 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/windows,node,linux,macos
-# Edit at https://www.toptal.com/developers/gitignore?templates=windows,node,linux,macos
+# Created by https://www.toptal.com/developers/gitignore/api/node,visualstudiocode,macos,windows,linux
+# Edit at https://www.toptal.com/developers/gitignore?templates=node,visualstudiocode,macos,windows,linux
 
 ### Linux ###
 *~
@@ -166,6 +166,22 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
 ### Windows ###
 # Windows thumbnail cache files
 Thumbs.db
@@ -192,4 +208,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/windows,node,linux,macos
+# End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode,macos,windows,linux
