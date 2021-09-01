@@ -14,7 +14,7 @@ app.get("/about", (req, res) => {
     res.status(200).send("This is the about route");
 });
 
-app.get("users/:username", (req, res) => {
+app.get("/users/:username", (req, res) => {
     res.status(200).send(`You requested info about ${req.params.username}`);
 })
 
