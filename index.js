@@ -13,9 +13,13 @@ app.get("/", (req, res) => {
 app.get("/about", (req, res) => {
     res.status(200).send("This is the about route");
 });
-
+// Things with a : get put into the req.params object
 app.get("/users/:username", (req, res) => {
     res.status(200).send(`You requested info about ${req.params.username}`);
+})
+
+app.get("/users/:username/:project", (req, res) => {
+    res.status(200).send(`You've requested info about ${req.params.project} created by ${req.params.username}`);
 })
 
 app.listen(port, () => {
