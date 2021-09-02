@@ -13,9 +13,9 @@ app.get("/", (req, res) => {
 app.get("/about", (req, res) => {
     res.status(200).send("This is the about route");
 });
-// Things with a : get put into the req.params object
+// Things with a : get put into the req.params object (known as dynamic routes). Queries get put into req.query
 app.get("/users/:username", (req, res) => {
-    res.status(200).send(`You requested info about ${req.params.username}`);
+    res.status(200).send(`You requested info about ${req.params.username}: ${req.query.age}`);
 })
 
 app.get("/users/:username/:project", (req, res) => {
