@@ -1,12 +1,15 @@
 require("dotenv").config();
-const express = require("express");
-const app = express();
 
+const express = require("express");
+
+const { connection } = require("./db");
 const indexRouter = require("./routes/index");
 const userRouter = require("./routes/user");
 const errorRouter = require("./routes/error");
+
+
+const app = express();
 const port = process.env.PORT || 5000;
-const { connection } = require("./db");
 
 app.use(express.json()); // Middleware ensures input from useragent is considered to be JSON.
 
