@@ -1,34 +1,19 @@
 require("dotenv").config();
-// Logical OR returns first truthy value or the last value
-const port = process.env.PORT || 5000;
-const { connection } = require("./db");
-const saltRounds = 10;
-
-const { addUser, listUsers } = require("./utils/user");
-const bcrypt = require("bcrypt");
 const express = require("express");
-const { rawListeners } = require("./models/user");
-const { reset } = require("nodemon");
 const app = express();
 
+const indexRouter = require("./routes/index");
+const userRouter = require("./routes/user");
+const errorRouter = require("./routes/error");
+const port = process.env.PORT || 5000;
+const { connection } = require("./db");
 
 app.use(express.json()); // Middleware ensures input from useragent is considered to be JSON.
 
-
-app.post("/register", async (req, res) => {
-    // If user enters two different passwords. putting return makes the callback function send that one status then quit
-    if (req.body.password !== req.body.checkPassword) {
-        return res.status(401).json({"message": "Passwords do not match"});
-    } else if (!req.body.username) {
-        return res.status(401).json({"message": "No username provided"});
-    }
-
-    const salt = await bcrypt.genSalt(saltRounds);
-    const hash = await bcrypt.hash(req.body.password, salt);
-
-    await addUser(req.body.username, hash);
-    res.status(201).json({"users": await listUsers()});
-});
+// These cascade - tries to match with each until any unmatching is caught by * in errorRouter
+app.use("/", indexRouter);
+app.use("/user", userRouter);
+app.use("*", errorRouter);
 
 app.listen(port, () => {
     connection.once("open", () => {
@@ -37,6 +22,24 @@ app.listen(port, () => {
     console.log("Webserver online");
 });
 
+
+
+// OLD CODE FOR POSTERITY
+
+// app.post("/register", async (req, res) => {
+//     // If user enters two different passwords. putting return makes the callback function send that one status then quit
+//     if (req.body.password !== req.body.checkPassword) {
+//         return res.status(401).json({"message": "Passwords do not match"});
+//     } else if (!req.body.username) {
+//         return res.status(401).json({"message": "No username provided"});
+//     }
+
+//     const salt = await bcrypt.genSalt(saltRounds);
+//     const hash = await bcrypt.hash(req.body.password, salt);
+
+//     await addUser(req.body.username, hash);
+//     res.status(201).json({"users": await listUsers()});
+// });
 
 // // Express takes two objects, a request and a response
 // app.get("/", (req, res) => {
