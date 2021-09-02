@@ -21,20 +21,38 @@ app.get("/", (req, res) => {
 
 // Things with a : get put into the req.params object (known as dynamic routes). Queries (?age=50&favcolor=blue) get put into req.query
 
-app.post("/register", (req, res) => {
-    bcrypt.genSalt(saltRounds, (err, salt) => {
-        if (err) {
-            res.status(500).json({"message": "something went wrong", "error": err});
-        }
+// Below is code for hashing a password using callbacks
+// app.post("/register", (req, res) => {
+//     bcrypt.genSalt(saltRounds, (err, salt) => {
+//         if (err) {
+//             res.status(500).json({"message": "something went wrong", "error": err});
+//         }
 
-        bcrypt.hash(req.body.password, salt, (err, hash) => {
-            if (err) {
-                res.status(500).json({"message": "something went wrong", "error": err})
-            }
-            res.status(201).json({"message": `Hashed password for ${req.body.username} is: ${hash}`});
-        })
-    })
-})
+//         bcrypt.hash(req.body.password, salt, (err, hash) => {
+//             if (err) {
+//                 res.status(500).json({"message": "something went wrong", "error": err});
+//             }
+//             bcrypt.compare(req.body.checkPassword, hash, (err, result) => {
+//                 if (result) {
+//                     res.status(201).json({"message": `Password ${req.body.checkPassword} matches ${hash}`});
+//                 } else {
+//                     res.status(401).json({"message": `Password ${req.body.checkPassword} does not match ${hash}`});
+//                 }
+//             });
+//         });
+//     });
+// });
+
+app.post("/register", async (req, res) => {
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hash = await bcrypt.hash(req.body.password, salt);
+
+    if (await bcrypt.compare(req.body.checkPassword, hash)) {
+        res.status(201).json({"message": `Password ${req.body.checkPassword} matches ${hash}`});
+    } else {
+        res.status(401).json({"message": `Password ${req.body.checkPassword} does not match ${hash}`});
+    }
+});
 
 app.post("/:username/", (req, res) => {
     res.status(201).json({"message": `repo created: ${req.body.project}`, "data": req.body});
