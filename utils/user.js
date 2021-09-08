@@ -4,7 +4,7 @@ exports.addUser = async (uname, hash) => {
     try {
         const newUser = new User({ name: uname, passwordHash: hash });
         await newUser.save();
-    } catch (error) {
+    } catch(error) {
         console.log(error);
     }
 };
